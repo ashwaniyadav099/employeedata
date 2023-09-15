@@ -131,7 +131,58 @@ text-align: left;
     transform: rotate(1turn);
   }
 }
+.rdw-inline-wrapper .rdw-option-wrapper{
+   padding: 5px;
 
+}
+.rdw-option-wrapper{
+  padding: 5px;
+  cursor: pointer;
+}
+.rdw-block-wrapper ,.rdw-fontsize-wrapper,.rdw-colorpicker-wrapper ,.rdw-fontfamily-wrapper{
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding:5px 10px;
+  border-radius: 8px;
+  padding-right: 25px;
+  position: relative;
+}
+.rdw-fontfamily-wrapper:after ,.rdw-block-wrapper:after ,.rdw-fontsize-wrapper:after{
+  background:url("https://i.ibb.co/hsDHVdY/down-arrow.png");
+  width: 10px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 10px;
+  content: '';
+  float: right;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  z-index: 99;
+  transform: translateY(-50%);
+}
+.rdw-inline-wrapper,.rdw-block-wrapper ,.rdw-fontsize-wrapper, .rdw-list-wrapper{
+ display: flex;
+}
+.rdw-editor-toolbar.toolbar-class{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 10px;
+  align-items: center;
+}
+.rdw-text-align-wrapper,.rdw-link-wrapper ,.rdw-colorpicker-wrapper , .rdw-embedded-wrapper ,.rdw-emoji-wrapper,.rdw-image-wrapper,.rdw-remove-wrapper ,.rdw-history-wrapper{
+  display: none !important;
+}
+.rdw-dropdown-optionwrapper{
+  position: absolute;
+  background-color: white;
+  padding: 10px;
+}
+.editor-class.rdw-editor-main{
+  padding: 20px;
+  height: 40vh ;
+}
 @media only screen and (max-width: 1366px) {
   .list-container{
   width: 90%;

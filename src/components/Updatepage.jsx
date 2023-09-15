@@ -1,5 +1,6 @@
 import React, { useState,useEffect  } from 'react'
 import axios from 'axios';
+import Swal from "sweetalert2";
 import { useSelector } from 'react-redux';
 import { Button, Label, TextInput } from 'flowbite-react';
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -8,7 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {useNavigate} from "react-router-dom";
 import ClickAwayListener from 'react-click-away-listener';
-
+import { Editor } from 'react-draft-wysiwyg';
 const options=["B.tech" , "B.E" , "B.com" , "BSC" , "BCA" , "ARTS" , "Madical" ,  "12th"]
 
 const Updatepage = () => {
@@ -78,12 +79,35 @@ const Updatepage = () => {
         if(data.fname.length && data.lname.length && data.dob.length && data.study.length && data.startdate.length && data.enddate.length){
          
             const apiUrl = `https://sweede.app/DeliveryBoy/update-Employee/${mydata.id}`;
+            let newdata = {
           
-            let response =   axios.post(apiUrl, data).then((response) => {
-                console.log(response.status, response.data);
-              });
-              let deta = response.data;
-             console.log(deta);
+                FirstName: data.fname,
+                LastName: data.lname,
+                DOB: data.dob,
+                Study: data.study,
+                StartDate: data.startdate,
+                EndDate: data.enddate,
+                CurrentSalary: data.salary,
+                Description: data.description
+           
+           }
+           axios.post(apiUrl,JSON.stringify(newdata) ,{
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((response)=>{
+            Swal.fire('Your data has been successfully Saved')
+            navigate('/employes')
+
+        }).catch((error)=>{
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                footer: '<a href="">Why do I have this issue?</a>'
+              })
+            navigate('/employes')
+        })
         }else{
             alert("Please enter all fields first");
         }
@@ -92,6 +116,9 @@ const Updatepage = () => {
     const handleClickAway = () => {
 		setshow(false)
 	};
+    const richtextgetter=(data)=>{
+        console.log(data)
+    }
   return (
     <div className='Registration_page'>
         <div className="container">
@@ -246,6 +273,15 @@ const Updatepage = () => {
                                     
                         
                     </div>
+                    <div className='bg-[#E9F2FF] text-black  my-[20px]  rounded-[16px]' >
+                       
+                                <Editor
+                                wrapperClassName="wrapper-class"
+                                editorClassName="editor-class"
+                                toolbarClassName="toolbar-class"
+                                onChange={richtextgetter}
+                                />
+                        </div>
                     <div className="flex gap-[50px] w-full">
                         <Button type='reset' className='flex-1 bg-[#E3E3E3] text-black hover:bg-[#E3E3E3]'>
                             Cancel

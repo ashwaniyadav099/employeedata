@@ -1,4 +1,4 @@
-import React, { useState  } from 'react'
+import React, { useState , useEffect } from 'react'
 import Swal from "sweetalert2";
 import axios from "axios";
 import { Button, Label, TextInput } from 'flowbite-react';
@@ -8,10 +8,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {useNavigate} from "react-router-dom";
 import ClickAwayListener from 'react-click-away-listener';
+import { Editor } from 'react-draft-wysiwyg';
+// import '../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 const options=["B.tech" , "B.E" , "B.com" , "BSC" , "BCA" , "ARTS" , "Madical" ,  "12th"]
 
 const Registrationform = () => {
-   
+    const EditorComponent = () => <Editor />
     const navigate = useNavigate();
     const [show,setshow]=useState(false)
     const [loader,setloader]=useState(false)
@@ -23,7 +25,8 @@ const Registrationform = () => {
         startdate:"",
         enddate:"",
         salary:0,
-        study:''
+        study:'',
+        description:''
     })
     const [optinsshow,setoptinsshow] = useState(options)
     const handelchage=(e)=>{
@@ -40,7 +43,7 @@ const Registrationform = () => {
         let date = `${e.$y}-${e.$D}-${m}` 
         data[keynm] = date;
     }
-    React.useEffect(() => {
+    useEffect(() => {
         const getData = setTimeout(() => {
             let newlist
             if(searchdat.length){
@@ -56,14 +59,26 @@ const Registrationform = () => {
     
         return () => clearTimeout(getData)
     }, [searchdat])
+
     const handelsubmit= async (e)=>{
          e.preventDefault()
          setloader(true)
         if(data.fname.length && data.lname.length && data.dob.length && data.study.length && data.startdate.length && data.enddate.length){
          
             const apiUrl = 'https://sweede.app/DeliveryBoy/Add-Employee/';
+           let newdata = {
           
-            axios.get(apiUrl,JSON.stringify(data) ,{
+                FirstName: data.fname,
+                LastName: data.lname,
+                DOB: data.dob,
+                Study: data.study,
+                StartDate: data.startdate,
+                EndDate: data.enddate,
+                CurrentSalary: data.salary,
+                Description: data.description
+           
+           }
+            axios.post(apiUrl,JSON.stringify(newdata) ,{
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -91,6 +106,10 @@ const Registrationform = () => {
     const handleClickAway = () => {
 		setshow(false)
 	};
+    const richtextgetter=(dec)=>{
+      
+        data.description =dec.blocks[0].text
+    }
   return (
     <div className='Registration_page'>
         <div className="container">
@@ -207,7 +226,7 @@ const Registrationform = () => {
                                     <div className="flex items-center  rounded hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <input id={`checkbox-item-${index}`} type="radio" value="" name='study' className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" onClick={()=>{ data.study = item;
                                         setdata({...data})}} />
-                                    <label for={`checkbox-item-${index}`} className="w-full py-2 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">{item}</label>
+                                    <label htmlFor={`checkbox-item-${index}`} className="w-full py-2 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">{item}</label>
                                     </div>
                                 </li>
                                 })
@@ -240,6 +259,15 @@ const Registrationform = () => {
                             
                                         
                             
+                        </div>
+                        <div className='bg-[#E9F2FF] text-black  my-[20px]  rounded-[16px]' >
+                       
+                                <Editor
+                                wrapperClassName="wrapper-class"
+                                editorClassName="editor-class"
+                                toolbarClassName="toolbar-class"
+                               onChange={richtextgetter}
+                                />
                         </div>
                         <div className="flex gap-[50px] w-full">
                             <Button type='reset' className='flex-1 bg-[#E3E3E3] text-black hover:bg-[#E3E3E3]'>
