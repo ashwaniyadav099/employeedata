@@ -67,7 +67,7 @@ const Employeelist = () => {
       setOpenModal(true)
     }
   return (
-    <div>
+    <div className='pb-[40px]'>
         <div className="container">
             <h2 className="page_title">
               Employee List
